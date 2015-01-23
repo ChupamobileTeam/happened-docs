@@ -72,11 +72,13 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 #### 2 Claims
 
+``` json
 {
     "iss": "debugger",
     "exp": 1451606400,
     "bha": "d41d8cd98f00b204e9800998ecf8427e"
 }
+```
 
 |   Attribute     |     Type    | Description |
 | ----------      | ----------- | ----------- |
