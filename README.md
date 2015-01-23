@@ -65,7 +65,7 @@ Nothing to know on the header is pretty standard and fixed, rarely change.
 
 |   Attribute     |     Type    | Description |
 | ----------      | ----------- | ----------- |
-| "typ" (mandatory) | String    | Type for the token, defaulted to "JWT". Specifies that this is a JWT token | 
+| "alg" (mandatory) | String	 |Algorithm. specifies the algorithm used to sign the token. In atlassian-connect version 1.0 we support the HMAC SHA-256 algorithm, which the JWT specification identifies using the string "HS256". |
 
 ##### Header Encoded
 
