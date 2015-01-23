@@ -108,12 +108,15 @@ claims = {
     "bha":  md5(Request.Body) //"d41d8cd98f00b204e9800998ecf8427e"
 }
 
-token = HMACSHA256(
-    base64UrlEncode(header) +"." +base64UrlEncode(claims),
+signed = HMACSHA256(
+    base64UrlEncode(header)+"."+base64UrlEncode(claims),
     "secret"
 )
+
+token = base64UrlEncode(header)+"."+base64UrlEncode(claims)+"."+signed
 ```
-The token is `eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
+The token now is:
+  `eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
 
 Then add to the the request 
 
