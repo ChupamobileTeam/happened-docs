@@ -1,5 +1,5 @@
 happened-docs
--------------
+=============
 
 This is the official documentation for the happened server.
 
@@ -11,7 +11,7 @@ Is a simple daemon for easy events aggregation.
 
 Happened accepts request with POST method.
 
-## API 
+## Client API
 
 - [POST] /api/smtg1
 
@@ -21,9 +21,20 @@ Happened accepts request with POST method.
 
     - `Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE`
 
-       see below for the meaning of $HEADER $CLAIMS and $SIGNEDVALUE
+       see below for the meaning of the JWT token $HEADER $CLAIMS and $SIGNEDVALUE
 
   * Body:
+
+| Name       |     Type    | Description |
+| ---------- | ----------- | ----------- |
+| appid      | string      | The ApplicationId given by the configuration file |
+| os         | string      | Operative System used by the client `AND`, `IOS`, `WIN` |
+| ver        | float       | Version of the OS used `2.1`, `4.1`, `9` |
+| sdk        | string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
+| name       | string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
+| value(optional) | string | Optional is the value of the function called eg. `2` |
+| at | string | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
+
 
 ``` json
 {
@@ -33,8 +44,12 @@ Happened accepts request with POST method.
     "sdk": "admob",
     "name": "setMainMenuBannerId",
     "value": ""
+    "at": "2011-04-22T13:33:48Z"
 }
 ```
+
+
+
 
 ## Debugging
 
