@@ -26,8 +26,7 @@ Happened **Accepts** request with POST method.
     "api_id": "debugger",
     "os": "AND",
     "osvers": "2.1",
-    "sdk": "admob",
-    "name": "setMainMenuBannerId",
+    "what": "admob.setMainMenuBannerId",
     "value": "",
     "at": "2011-04-22T13:33:48Z"
 }
@@ -39,10 +38,8 @@ Happened **Accepts** request with POST method.
 | "at" (mandatory)| string      | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
 | "os" (mandatory)| string      | Operative System used by the client `AND`, `IOS`, `WIN` |
 | "ver" (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
-| "sdk" (mandatory)| string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
-| "name" (mandatory)| string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
-| "value" (optional) | string | Optional is the value of the function called eg. `2` |
-
+| "what" (mandatory)| string      | This is the name of the event eg. vendorClass.function eg. `admob.setMainMenuBannerId` |
+| "value" (optional) | string | Optional could be the value of the function called eg. `2` |
  
 ## Authorization
 
