@@ -3,13 +3,9 @@ happened-docs
 
 This is the official documentation for the happened server.
 
-## What is
+**Is** a simple daemon for easy events aggregation.
 
-Is a simple daemon for easy events aggregation.
-
-## How it works
-
-Happened accepts request with POST method.
+Happened **Accepts** request with POST method.
 
 ## Client API
 
@@ -17,10 +13,10 @@ Happened accepts request with POST method.
 
 #### Request Headers: 
 
-1. `Content-Type: application/json`
+`Content-Type: application/json`
 
-2. `Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE`
- see below for the meaning of the JWT token $HEADER $CLAIMS and $SIGNEDVALUE
+`Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE` 
+  more info [in the Authorization chapter](#authorization) for the meaning of the JWT token(`$HEADER` `$CLAIMS` and `$SIGNEDVALUE`).
 
 #### Request content:
 
@@ -31,20 +27,20 @@ Happened accepts request with POST method.
     "osvers": "2.1",
     "sdk": "admob",
     "name": "setMainMenuBannerId",
-    "value": ""
+    "value": "",
     "at": "2011-04-22T13:33:48Z"
 }
 ```
 
 | Name       |     Type    | Description |
 | ---------- | ----------- | ----------- |
-| appid (mandatory)| string      | The ApplicationId given by the configuration file |
-| at (mandatory)| string      | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
-| os (mandatory)| string      | Operative System used by the client `AND`, `IOS`, `WIN` |
-| ver (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
-| sdk (mandatory)| string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
-| name (mandatory)| string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
-| value (optional) | string | Optional is the value of the function called eg. `2` |
+| "appid" (mandatory)| string      | The ApplicationId given by the configuration file |
+| "at" (mandatory)| string      | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
+| "os" (mandatory)| string      | Operative System used by the client `AND`, `IOS`, `WIN` |
+| "ver" (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
+| "sdk" (mandatory)| string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
+| "name" (mandatory)| string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
+| "value" (optional) | string | Optional is the value of the function called eg. `2` |
 
  
 ## Authorization
