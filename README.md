@@ -23,7 +23,7 @@ Happened **Accepts** request with POST method.
 
 ``` json
 {
-    "app_id": "A123",
+    "api_id": "debugger",
     "os": "AND",
     "osvers": "2.1",
     "sdk": "admob",
@@ -35,7 +35,7 @@ Happened **Accepts** request with POST method.
 
 | Name       |     Type    | Description |
 | ---------- | ----------- | ----------- |
-| "appid" (mandatory)| string      | The ApplicationId given by the configuration file |
+| "api_id" (mandatory)| string      | The Api Id. |
 | "at" (mandatory)| string      | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
 | "os" (mandatory)| string      | Operative System used by the client `AND`, `IOS`, `WIN` |
 | "ver" (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
@@ -84,25 +84,23 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 | ----------      | ----------- | ----------- |
 | api_id (mandatory) | String	| the ApiID of the Request. It is used it to identify the application making the call. |
 | exp (mandatory) | 	Long | Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It must not be after 15 min after the issued time. Only for debugging purpose the 15 mins limit has been removed.|
-| bha (mandatory) | String | Body Content Hash the Md5 of the content. eg. `md5(request.body)` |
+| bha (mandatory) | String | The hash of the body content, using the Md5 algorithm eg. `md5(request.body)` |
 
 ##### Claims Encoded
 
 base64UrlEncode(claims) = `eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ`
 
-### 3 The Signed
+### 3 The Signed part
 
+The signed part is about signing the header and the claim with the shared secret `api_key`.
 
 ### A Pseudo Algorithm
 
-Given `ApiId` and a `secret`
-has to send a `Request.Body`
+Given `api_id` and a `api_key` and a `Request.Body` we can generate the Signed Part.
 
-forging the `token`
+#### Forging the `token`
 
 ```
-cha = md5(Request.Body)
-
 header = {
     "alg":"HS256"
 }
@@ -110,12 +108,11 @@ header = {
 claims = {
     "api_id": "debugger",
     "exp": 1451606400,
-    "bha": "d41d8cd98f00b204e9800998ecf8427e"
+    "bha":  md5(Request.Body) //"d41d8cd98f00b204e9800998ecf8427e"
 }
 
 token = HMACSHA256(
-    base64UrlEncode(header) + "." +
-    base64UrlEncode(payload),
+    base64UrlEncode(header) +"." +base64UrlEncode(claims),
     "secret"
 )
 ```
