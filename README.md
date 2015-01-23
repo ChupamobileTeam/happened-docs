@@ -122,6 +122,11 @@ Then add to the the request
 
 `Request.addHeader("Authorization", "BEARER "+token)`
 
+## Debugging
+
+the root is /api/debug/smtg 
+
+
 ### Articles and tools 
 
 1. http://jwt.io/
