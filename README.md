@@ -49,9 +49,13 @@ for debugging purpose the use as apiId `debugger` and as apiKey `secret`
 
 ###  JWT TOKEN
 
-The JWT token is composed by 3 parts, the first is the **header** about the algorithm used, the second is the **claims** called also payload, the third part is the **signed** that certificate the first two.
+The JWT token is composed by 3 parts joined by ".", the first is the **header** about the algorithm used, the second is the **claims** called also payload, the third part is the **signed** that certificate the first two.
 
-#### 1 Header
+The token will be composed by `base64(header).base64(claims).signed`
+
+#### 1. token.Header
+
+Nothing to know on the header is pretty standard and fixed, rarely change.
 
 ``` json
 {
@@ -67,7 +71,7 @@ The JWT token is composed by 3 parts, the first is the **header** about the algo
 
 base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
-#### 2 Claims
+#### 2. token.Claims
 
 ``` json
 {
@@ -87,7 +91,7 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 base64UrlEncode(claims) = `eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ`
 
-#### 3 The Signed part
+#### 3. The signed part
 
 The signed part is about signing the header and the claim with the shared secret `api_key`.
 
