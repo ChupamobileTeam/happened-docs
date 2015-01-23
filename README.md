@@ -87,15 +87,15 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 base64UrlEncode(claims) = `eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ`
 
-### 3 The Signed part
+#### 3 The Signed part
 
 The signed part is about signing the header and the claim with the shared secret `api_key`.
 
-### A Pseudo Algorithm
+##### A Pseudo Algorithm
 
 Given `api_id` and a `api_key` and a `Request.Body` we can generate the Signed Part.
 
-#### Forging the `token`
+##### Forging the `token`
 
 ```
 header = {
@@ -119,17 +119,13 @@ Then add to the the request
 
 `Request.addHeader("Authorization", "BEARER "+token)`
 
-## Debugging
-
-the root is /api/debug/smtg 
-
-
-### Articles and tools 
+### Tools 
 
 1. http://jwt.io/
-2. https://developer.atlassian.com/static/connect/docs/concepts/understanding-jwt.html
-3. https://developers.google.com/wallet/instant-buy/about-jwts
-4. https://github.com/gin-gonic/contrib/blob/master/jwt/jwt.go
-5. https://github.com/dgrijalva/jwt-go/blob/master/jwt.go
-6. http://www.timestampgenerator.com/1451606400/#result
-http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html#ConstructingTheAuthenticationHeader
+2. http://www.timestampgenerator.com/1451606400/#result
+
+### Related articles
+
+1. https://developer.atlassian.com/static/connect/docs/concepts/understanding-jwt.html
+2. https://developers.google.com/wallet/instant-buy/about-jwts
+3. http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html#ConstructingTheAuthenticationHeader
