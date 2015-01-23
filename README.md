@@ -13,28 +13,16 @@ Happened accepts request with POST method.
 
 ## Client API
 
-- [POST] /api/smtg1
+### [POST] /api/smtg
 
-  * Headers: 
+#### Request Headers: 
 
-    - `Content-Type: application/json`
+1. `Content-Type: application/json`
 
-    - `Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE`
+2. `Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE`
+ see below for the meaning of the JWT token $HEADER $CLAIMS and $SIGNEDVALUE
 
-       see below for the meaning of the JWT token $HEADER $CLAIMS and $SIGNEDVALUE
-
-  * Body:
-
-| Name       |     Type    | Description |
-| ---------- | ----------- | ----------- |
-| appid      | string      | The ApplicationId given by the configuration file |
-| os         | string      | Operative System used by the client `AND`, `IOS`, `WIN` |
-| ver        | float       | Version of the OS used `2.1`, `4.1`, `9` |
-| sdk        | string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
-| name       | string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
-| value(optional) | string | Optional is the value of the function called eg. `2` |
-| at | string | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
-
+#### Request content:
 
 ``` json
 {
@@ -48,53 +36,54 @@ Happened accepts request with POST method.
 }
 ```
 
+| Name       |     Type    | Description |
+| ---------- | ----------- | ----------- |
+| appid (mandatory)| string      | The ApplicationId given by the configuration file |
+| at (mandatory)| string      | When the event happened, this is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ. |
+| os (mandatory)| string      | Operative System used by the client `AND`, `IOS`, `WIN` |
+| ver (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
+| sdk (mandatory)| string      | Vendor name of the third party tool eg. `admob`, `flurry`... |
+| name (mandatory)| string      | Function name called composed by class.function eg. `admob.setMainMenuBannerId` |
+| value (optional) | string | Optional is the value of the function called eg. `2` |
 
+ 
+## Authorization
 
-
-## Debugging
-
-@todo
-
-- [POST] /api/debug/smtg 
-
-## 
-
-## Authentication
+In order to authorize the request, the client should have a `apiId` and a `apiKey`
 
 ###  JWT TOKEN
+
+The JWT token is composed by 3 parts, the first is the header about the algorithm used, the second is the claim called also payload, the third part is the signed that certificate the first two.
 
 #### Header
 
 ``` json
 {
-    "typ":"JWT",
-    "alg":"HS256"
+    "typ":"JWT"
 }
 ```
 
-Attribute	Type	Description
-"typ" (mandatory)	String	Type for the token, defaulted to "JWT". Specifies that this is a JWT token
-"alg" (optional)	String	Algorithm. specifies the algorithm used to sign the token. In atlassian-connect version 1.0 we support the HMAC SHA-256 algorithm, which the JWT specification identifies using the string "HS256".
+|   Attribute     |     Type    | Description |
+| ----------      | ----------- | ----------- |
+| "typ" (mandatory) | String    | Type for the token, defaulted to "JWT". Specifies that this is a JWT token | 
 
-#### Payload
+##### Header Encoded
+
+`base64UrlEncode(header) = eyJhbGciOiJIUzI1NiJ9`
+
+#### Claim
 
 {
     "iss": "abc123",
-    "iat":  1300819370,
     "exp": 1300819380,
-    "cha": "8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9"
+    "bha": "8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9"
 }
 
-
-Attribute	Type	Description
-
-iis (mandatory)	String	the Issuer of the Request. Connect uses it to identify the application making the call. for example: If the Atlassian product is the calling application: contains the unique identifier of the tenant. This is the clientKey that you receive in the installed callback. You should reject unrecognised issuers. If the add-on is the calling application: the add-on key specified in the add-on descriptor
-
-iat (mandatory)	Long	Issued at time. Contains the UTC Unix time at which this token was issued. There are no hard requirements around this claim but it does not make sense for it to be significantly in the future. Also, significantly old issued-at times may indicate the replay of suspiciously old tokens.
-
-exp (mandatory)	Long	Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It should be after the issued-at time.
-
-cha (mandatory)	String	Content hash. 
+|   Attribute     |     Type    | Description |
+| ----------      | ----------- | ----------- |
+| iis (mandatory) | String	| the Issuer of the Request. Connect uses it to identify the application making the call. for example: If the Atlassian product is the calling application: contains the unique identifier of the tenant. This is the clientKey that you receive in the installed callback. You should reject unrecognised issuers. If the add-on is the calling application: the add-on key specified in the add-on descriptor |
+| exp (mandatory) | 	Long | Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It should be after the issued-at time.|
+| bha (mandatory) | String | Body Content Hash the Md5 of the content. |
 
 ### Client Algorithm:
 
@@ -128,6 +117,14 @@ token = HMACSHA256(
 Then add to the the request 
 
 `Request.addHeader("Authorization", "BEARER "+token)`
+
+
+
+## Debugging
+
+@todo
+
+- [POST] /api/debug/smtg 
 
 
 ### JWT
