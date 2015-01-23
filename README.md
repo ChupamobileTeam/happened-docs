@@ -74,7 +74,7 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 ``` json
 {
-    "iss": "debugger",
+    "api_id": "debugger",
     "exp": 1451606400,
     "bha": "d41d8cd98f00b204e9800998ecf8427e"
 }
@@ -82,7 +82,7 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 |   Attribute     |     Type    | Description |
 | ----------      | ----------- | ----------- |
-| iis (mandatory) | String	| the Issuer of the Request. Connect uses it to identify the application making the call. for example: If the Atlassian product is the calling application: contains the unique identifier of the tenant. This is the clientKey that you receive in the installed callback. You should reject unrecognised issuers. If the add-on is the calling application: the add-on key specified in the add-on descriptor |
+| api_id (mandatory) | String	| the ApiID of the Request. It is used it to identify the application making the call. |
 | exp (mandatory) | 	Long | Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It must not be after 15 min after the issued time. Only for debugging purpose the 15 mins limit has been removed.|
 | bha (mandatory) | String | Body Content Hash the Md5 of the content. eg. `md5(request.body)` |
 
@@ -108,7 +108,7 @@ header = {
 }
 
 claims = {
-    "iss": "debugger",
+    "api_id": "debugger",
     "exp": 1451606400,
     "bha": "d41d8cd98f00b204e9800998ecf8427e"
 }
