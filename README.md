@@ -23,7 +23,7 @@ Happened **Accepts** request with POST method.
 
 ``` json
 {
-    "appid": "A123",
+    "app_id": "A123",
     "os": "AND",
     "osvers": "2.1",
     "sdk": "admob",
