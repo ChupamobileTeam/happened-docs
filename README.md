@@ -15,8 +15,9 @@ Happened **Accepts** request with POST method.
 
 `Content-Type: application/json`
 
-`Authorization: BEARER $HEADER.$CLAIMS.$SIGNEDVALUE` 
-  more info [in the Authorization chapter](#authorization) for the meaning of the JWT token(`$HEADER` `$CLAIMS` and `$SIGNEDVALUE`).
+`Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
+ 
+  more about how to create this value [in the Authorization chapter](#authorization).
 
 #### Request content:
 
@@ -47,15 +48,17 @@ Happened **Accepts** request with POST method.
 
 In order to authorize the request, the client should have a `apiId` and a `apiKey`
 
+for debugging purpose the use as apiId `debugger` and as apiKey `secret`
+
 ###  JWT TOKEN
 
-The JWT token is composed by 3 parts, the first is the header about the algorithm used, the second is the claim called also payload, the third part is the signed that certificate the first two.
+The JWT token is composed by 3 parts, the first is the **header** about the algorithm used, the second is the **claims** called also payload, the third part is the **signed** that certificate the first two.
 
-#### Header
+#### 1 Header
 
 ``` json
 {
-    "typ":"JWT"
+  "alg": "HS256"
 }
 ```
 
@@ -65,23 +68,30 @@ The JWT token is composed by 3 parts, the first is the header about the algorith
 
 ##### Header Encoded
 
-`base64UrlEncode(header) = eyJhbGciOiJIUzI1NiJ9`
+base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
-#### Claim
+#### 2 Claims
 
 {
-    "iss": "abc123",
-    "exp": 1300819380,
-    "bha": "8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9"
+    "iss": "debugger",
+    "exp": 1451606400,
+    "bha": "d41d8cd98f00b204e9800998ecf8427e"
 }
 
 |   Attribute     |     Type    | Description |
 | ----------      | ----------- | ----------- |
 | iis (mandatory) | String	| the Issuer of the Request. Connect uses it to identify the application making the call. for example: If the Atlassian product is the calling application: contains the unique identifier of the tenant. This is the clientKey that you receive in the installed callback. You should reject unrecognised issuers. If the add-on is the calling application: the add-on key specified in the add-on descriptor |
-| exp (mandatory) | 	Long | Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It should be after the issued-at time.|
-| bha (mandatory) | String | Body Content Hash the Md5 of the content. |
+| exp (mandatory) | 	Long | Expiration time. It contains the UTC Unix time after which you should no longer accept this token. It must not be after 15 min after the issued time. Only for debugging purpose the 15 mins limit has been removed.|
+| bha (mandatory) | String | Body Content Hash the Md5 of the content. eg. `md5(request.body)` |
 
-### Client Algorithm:
+##### Claims Encoded
+
+base64UrlEncode(claims) = `eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ`
+
+### 3 The Signed
+
+
+### A Pseudo Algorithm
 
 Given `ApiId` and a `secret`
 has to send a `Request.Body`
@@ -92,43 +102,33 @@ forging the `token`
 cha = md5(Request.Body)
 
 header = {
-    "typ":"JWT",
     "alg":"HS256"
 }
 
-payload = {
-	"aid": aid
-	"hat": unix
-	"exp": unix
-    "cha": cha
+claims = {
+    "iss": "debugger",
+    "exp": 1451606400,
+    "bha": "d41d8cd98f00b204e9800998ecf8427e"
 }
 
 token = HMACSHA256(
-	base64UrlEncode(header) + "." +
+    base64UrlEncode(header) + "." +
     base64UrlEncode(payload),
-    secret
+    "secret"
 )
 ```
+The token is `eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
 
 Then add to the the request 
 
 `Request.addHeader("Authorization", "BEARER "+token)`
 
+### Articles and tools 
 
-
-## Debugging
-
-@todo
-
-- [POST] /api/debug/smtg 
-
-
-### JWT
-
-1. https://developer.atlassian.com/static/connect/docs/concepts/understanding-jwt.html
-2. https://developers.google.com/wallet/instant-buy/about-jwts
-3. http://jwt.io/
+1. http://jwt.io/
+2. https://developer.atlassian.com/static/connect/docs/concepts/understanding-jwt.html
+3. https://developers.google.com/wallet/instant-buy/about-jwts
 4. https://github.com/gin-gonic/contrib/blob/master/jwt/jwt.go
 5. https://github.com/dgrijalva/jwt-go/blob/master/jwt.go
-
+6. http://www.timestampgenerator.com/1451606400/#result
 http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html#ConstructingTheAuthenticationHeader
