@@ -15,21 +15,14 @@ Happened **Accepts** request with POST method.
 
 `Content-Type: application/json`
 
-`Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
+`Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z8`
  
   more about how to create this value [in the Authorization chapter](#authorization).
 
 #### Request content:
 
 ``` json
-{
-    "api_id": "debugger",
-    "os": "AND",
-    "osvers": "2.1",
-    "what": "admob.setMainMenuBannerId",
-    "value": "",
-    "at": "2011-04-22T13:33:48Z"
-}
+{"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}
 ```
 
 | Name       |     Type    | Description |
@@ -40,6 +33,8 @@ Happened **Accepts** request with POST method.
 | "ver" (mandatory)| float       | Version of the OS used `2.1`, `4.1`, `9` |
 | "what" (mandatory)| string      | This is the name of the event eg. vendorClass.function eg. `admob.setMainMenuBannerId` |
 | "value" (optional) | string | Optional could be the value of the function called eg. `2` |
+ 
+The hash of the content is used by the token the hash of that token is `c23543fd68fe6c8b82691ab2b402f423`
  
 ## Authorization
 
@@ -73,11 +68,11 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 #### 2. token.Claims
 
-``` json
+```json
 {
     "api_id": "debugger",
     "exp": 1451606400,
-    "bha": "d41d8cd98f00b204e9800998ecf8427e"
+    "bha": "c23543fd68fe6c8b82691ab2b402f423"
 }
 ```
 
@@ -89,7 +84,7 @@ base64UrlEncode(header) = `eyJhbGciOiJIUzI1NiJ9`
 
 ##### Claims Encoded
 
-base64UrlEncode(claims) = `eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ`
+base64UrlEncode(claims) = `eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ`
 
 #### 3. The signed part
 
@@ -109,7 +104,7 @@ header = {
 claims = {
     "api_id": "debugger",
     "exp": 1451606400,
-    "bha":  md5(Request.Body) //"d41d8cd98f00b204e9800998ecf8427e"
+    "bha": "c23543fd68fe6c8b82691ab2b402f423"
 }
 
 signed = HMACSHA256(
@@ -120,11 +115,20 @@ signed = HMACSHA256(
 token = base64UrlEncode(header)+"."+base64UrlEncode(claims)+"."+signed
 ```
 The token now is:
-  `eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UifQ.jvhMSPJBM9zG1QBAvlW3ICOUNsBZ0J-NL5Sy9q_maI4`
+  `eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z84`
 
 Then add to the the request 
 
 `Request.addHeader("Authorization", "BEARER "+token)`
+
+## Make a request
+
+The server will return 201
+
+``` bash
+curl -X POST  http://WEBSITE/smtg -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z8' -H "Content-Type: application/json" -d '{"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}'
+```
+
 
 ### Tools 
 
