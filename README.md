@@ -5,13 +5,16 @@ This is the official documentation for the happened server.
 
 **Is** a simple daemon for easy events aggregation.
 
-Happened **Accepts** request with POST method.
+Happened **Accepts** request with POST method, 
+using JWT for authorization.
 
 ## Client API
 
-### [POST] /api/smtg
+### A. Single Event 
 
-#### Request Headers: 
+#### [POST] /api/smtg
+
+##### Request Headers: 
 
 `Content-Type: application/json`
 
@@ -19,7 +22,9 @@ Happened **Accepts** request with POST method.
  
   more about how to create this value [in the Authorization chapter](#authorization).
 
-#### Request content:
+##### Request content:
+
+A `something` object:
 
 ``` json
 {"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}
@@ -41,6 +46,38 @@ The hash of the content is used by the token the hash of that token is `c23543fd
 In order to authorize the request, the client should have a `apiId` and a `apiKey`
 
 for debugging purpose the use as apiId `debugger` and as apiKey `secret`
+
+### B. Multiple Events, array
+
+#### [POST] /api/smtgs
+
+##### Request Headers:
+
+Same of `[POST] /api/smtg`
+
+##### Request content:
+
+Is a JSON array of the `something` object:
+
+example:
+
+``` json
+ {
+	        "api_id": "A124",
+	        "at": "2011-04-10T20:09:31Z",
+	        "oS": "ANDROID",
+	        "ver": "2.1",
+	        "what": "admov.adcall"
+	    },
+	    {
+	       "api_id": "A125",
+	        "at": "2013-04-10T20:09:31Z",
+	        "oS": "IOS",
+	        "ver": "8",
+	        "what": "flurry.xyz"
+	    }
+	]
+```
 
 ###  JWT TOKEN
 
@@ -126,7 +163,7 @@ Then add to the the request
 The server will return 201
 
 ``` bash
-curl -X POST  http://WEBSITE/smtg -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z8' -H "Content-Type: application/json" -d '{"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}'
+curl -X POST  http://happened.herokuapp.com/smtg -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z8' -H "Content-Type: application/json" -d '{"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}'
 ```
 
 
