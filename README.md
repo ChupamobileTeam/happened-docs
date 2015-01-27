@@ -41,12 +41,6 @@ A `something` object:
  
 The hash of the content is used by the token the hash of that token is `c23543fd68fe6c8b82691ab2b402f423`
  
-## Authorization
-
-In order to authorize the request, the client should have a `apiId` and a `apiKey`
-
-for debugging purpose the use as apiId `debugger` and as apiKey `secret`
-
 ### B. Multiple Events, array
 
 #### [POST] /api/smtgs
@@ -78,6 +72,12 @@ example:
 	    }
 	]
 ```
+
+## Authorization
+
+In order to authorize the request, the client should have a `apiId` and a `apiKey`
+
+for debugging purpose the use as apiId `debugger` and as apiKey `secret`
 
 ###  JWT TOKEN
 
