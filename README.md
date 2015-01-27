@@ -56,21 +56,22 @@ Is a JSON array of the `something` object:
 example:
 
 ``` json
- {
-	        "api_id": "A124",
-	        "at": "2011-04-10T20:09:31Z",
-	        "oS": "ANDROID",
-	        "ver": "2.1",
-	        "what": "admov.adcall"
-	    },
-	    {
-	       "api_id": "A125",
-	        "at": "2013-04-10T20:09:31Z",
-	        "oS": "IOS",
-	        "ver": "8",
-	        "what": "flurry.xyz"
-	    }
-	]
+[
+    {
+        "api_id": "A124",
+        "at": "2011-04-10T20:09:31Z",
+        "oS": "ANDROID",
+        "ver": "2.1",
+        "what": "admov.adcall"
+    },
+    {
+       "api_id": "A125",
+        "at": "2013-04-10T20:09:31Z",
+        "oS": "IOS",
+        "ver": "8",
+        "what": "flurry.xyz"
+    }
+]
 ```
 
 ## Authorization
