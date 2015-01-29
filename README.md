@@ -12,7 +12,7 @@ using JWT for authorization.
 
 ### A. Single Event 
 
-#### [POST] /api/smtg
+#### [POST] /smtg
 
 ##### Request Headers: 
 
@@ -47,7 +47,7 @@ The hash of the content is used by the token the hash of that token is `c23543fd
 
 ##### Request Headers:
 
-Same of `[POST] /api/smtg`
+Same of `[POST] /smtg`
 
 ##### Request content:
 
@@ -167,6 +167,11 @@ The server will return 201
 curl -X POST  http://happened.herokuapp.com/smtg -H 'Authorization: BEARER eyJhbGciOiJIUzI1NiJ9.eyJhcGlfaWQiOiJkZWJ1Z2dlciIsImV4cCI6MTQ1MTYwNjQwMCwiYmhhIjoiYzIzNTQzZmQ2OGZlNmM4YjgyNjkxYWIyYjQwMmY0MjMifQ.yC0qeyxTy_QfMBhoHdAq68KIDOaqFCJNHf6g9HBD4z8' -H "Content-Type: application/json" -d '{"api_id":"A124","at":"2011-04-10T20:09:31Z","os":"ANDROID","ver":"2.1","what":"admov.adcall","value":""}'
 ```
 
+### Debug 
+
+#### [GET] /dump
+
+Reaching /dump route you can have the latest events.
 
 ### Tools 
 
